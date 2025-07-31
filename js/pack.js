@@ -6,9 +6,9 @@ const dataRecived = {
       {name : "CLARO", id : 3},
     ],
     plataforma : [
-      {name : "Mercado Pago", id : 1},//, url : "https://restito.playtown.com.ar:3000/wallet/pay/create_checkout"},
-      {name : "Pago360", id : 2},//, url : "https://restito.playtown.com.ar:3000/wallet/pay/create_checkout360"},
-      {name : "Mensaje de Texto", id : 3}//, url : "https://externos.playtown.com.ar/amordinero/sms.php"}
+      {name : "Mercado Pago", id : 1},
+      {name : "Pago360", id : 2},
+      {name : "Mensaje de Texto", id : 3}
     ],
       id_producto: 501,
       id_trivia: 501
@@ -22,8 +22,6 @@ const seccionPago = document.getElementById('seccionPago');
 const seccionFormulario = document.getElementById('seccionFormulario');
 const cerrarModalPago = document.getElementById('cerrarModalPago');
 const cerrarModalForm = document.getElementById('cerrarModalForm');
-//const tokenPack = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJtaXNzaW9ucyI6WyJ0cml2aWE6dXNlciJdLCJ1c2VybmFtZSI6ImpvaG4gRG9lIiwiYWRtaW4iOiJ1c2VyIiwic291cmNlIjoiQVJHIiwiaWF0IjoxNjc2MzE0MTI5fQ.BTqqGUuKsnG6GjEnfzvH_4ZDxV7CzavCEPi_QgINRss";
-//const tokenLand = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJtaXNzaW9ucyI6WyJ3YWxsZXQ6dXNlciJdLCJ1c2VybmFtZSI6ImpvaG4gRG9lIiwiYWRtaW4iOiJ1c2VyIiwic291cmNlIjoiQVJHIiwiaWF0IjoxNjc2MzE0MTI5fQ.y-8YlrmsjFUl7kaE7DF1uwuyX4rfaZefyFQIRSj95Ck";
 
 //Variables
 let packSeleccionado = null;
@@ -34,7 +32,7 @@ let opcionElegida = "";
 /* async function ObtenerPacks(){
   try{
     //Consumo los datos de la API para obtener los packs
-    const res = await fetch('https://restito.playtown.com.ar:3000/wallet/trivia/package', { 
+    const res = await fetch(, { 
     method: "GET",
     headers:{
         "Authorization": `Bearer ${tokenPack}`,
@@ -131,7 +129,7 @@ function crearBtn(plataforma) {
         const id = parseInt(e.target.getAttribute('data-id'), 10);
 
 /*         if (opcion === "Mensaje de Texto") {
-          window.location.href = "https://externos.playtown.com.ar/amordinero/sms.php";
+          window.location.href = "";
           console.log("Redireccion:", window.location.href)
           return;
         } */

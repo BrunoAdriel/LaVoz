@@ -1,7 +1,3 @@
-//Codigo para despues obtener y mandar la info :id/active/
-//const API_URL_TRIVIA = 'https://restito.playtown.com.ar:3000/wallet/trivia';
-//const API_ANI = 'https://restito.playtown.com.ar:3000/wallet/trivia';
-//const tokenTrivia = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJtaXNzaW9ucyI6WyJ0cml2aWE6dXNlciJdLCJ1c2VybmFtZSI6ImpvaG4gRG9lIiwiYWRtaW4iOiJ1c2VyIiwic291cmNlIjoiQVJHIiwiaWF0IjoxNjc2MzE0MTI5fQ.BTqqGUuKsnG6GjEnfzvH_4ZDxV7CzavCEPi_QgINRss';
 
 // Almacenadores
 let respuestaSeleccionada = null;
@@ -144,7 +140,7 @@ document.getElementById('validarTelefono').addEventListener('click', async() => 
     throw new Error("Fallo interno en el servidor.");
   }
 });
- 
+
 // Iniciar Trivia
 btnIniciarTrivia.addEventListener('click', async () => {
   // Ocultar input y botón de validación del telefeno

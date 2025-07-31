@@ -5,7 +5,6 @@ const cerrarModal = document.getElementById('cerrarModal');
 const seccionOpciones = document.getElementById('seccionOpciones');
 const seccionFormulario = document.getElementById('seccionFormulario');
 const voteForm = document.getElementById('voteForm');
-//const tokenLand = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJtaXNzaW9ucyI6WyJ3YWxsZXQ6dXNlciJdLCJ1c2VybmFtZSI6ImpvaG4gRG9lIiwiYWRtaW4iOiJ1c2VyIiwic291cmNlIjoiQVJHIiwiaWF0IjoxNjc2MzE0MTI5fQ.y-8YlrmsjFUl7kaE7DF1uwuyX4rfaZefyFQIRSj95Ck";
 
 let participante = "" ;
 let nombreParticipante = ""; 
@@ -34,10 +33,10 @@ const dataRecived = {
       {name : "movistar", id : 3},
     ],
     plataforma : [
-      {name : "Mercado Pago", id : 1},//, url : "https://restito.playtown.com.ar:3000/wallet/pay/create_checkout"},
-      {name : "Pago360", id : 2},//, url : "https://restito.playtown.com.ar:3000/wallet/pay/create_checkout360"},
-      {name : "Mensaje de Texto", id : 3}//, url : "https://externos.playtown.com.ar/amordinero/sms.php"}
-    ],
+      {name : "Mercado Pago", id : 1},
+      {name : "Pago360", id : 2},
+      {name : "Mensaje de Texto", id : 3}
+],
     idproducto: 355
 };
 
@@ -131,7 +130,7 @@ medioPago.addEventListener('click', (e) => {
 
   //Si es mensaje de texto te redirecciona a la URL
   if (opcionElegida === "Mensaje de Texto") {
-    window.location.href = ""//"https://externos.playtown.com.ar/amordinero/sms.php";
+    window.location.href = ""
     return;
   }
 
@@ -236,7 +235,7 @@ telefonoInput.addEventListener('input', (e) => {
     postSubmit.classList.remove("hidden");
     document.getElementById("loadingSpinner").classList.remove("hidden");
 
-    //Datos del cliente que se envian a la BD
+/*     //Datos del cliente que se envian a la BD
     const datos = { 
       id_candidato: participante, 
       id_plataforma: idMedioPago, 
@@ -248,7 +247,7 @@ telefonoInput.addEventListener('input', (e) => {
       id_producto: Number(dataRecived.idproducto)
     };
 
-    await enviarPago(datos, opcionElegida);
+    await enviarPago(datos, opcionElegida); */
 });
   
 //Funcion para agregarle precio dependiendo al opcion elegida
