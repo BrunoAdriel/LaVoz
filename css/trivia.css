@@ -1,0 +1,92 @@
+/* Estilos Trivia */
+
+/* Estilo Form */
+.containerForm {
+  position: relative;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 90vw;
+  max-width: 70%;
+  padding: 2rem;
+  color: #fff;
+  overflow-y: auto;
+  border-radius: 20px;
+  border: 3px solid #ff1f3d;
+}
+
+.btn-principal {
+  background-color: #031927;
+  background: linear-gradient(135deg, rgba(255, 31, 61, 0.4) 0%, #031927 20%, #031927 80%, rgba(255, 31, 61, 0.4) 100%);
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+  min-width: 6rem;
+  max-width: 10rem;
+  white-space: normal;
+  overflow: unset;
+  text-overflow: unset;
+  font-size: 1rem;
+}
+
+/* btn para enviar resultado */
+.btn-enviar {
+  background: linear-gradient(145deg, #1f3b2d, #295d45); /* Verde más pro */
+  border: none;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(25, 70, 50, 0.4);
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+}
+.btn-enviar:hover {
+  background: linear-gradient(145deg, #1e4533, #3b8866); /* Un verde más claro y luminoso al hacer hover */
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(25, 70, 50, 0.5);
+}
+
+/* Estilos btn y loading  */
+.btn-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+#spinnerSubmit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -20%);
+  z-index: 10;
+}
+
+
+/* Clases btn opcion */
+#opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; 
+  align-items: center;
+  margin-top: 1rem;
+}
+#opciones button {
+  width: 90%;
+  max-width: 18.75rem;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.1rem;
+  border-radius: 12px;
+  white-space: normal;
+  word-break: break-word;
+}
+
+
+/* Resultados */
+.resultadoContainer {
+  max-height: 70vh;
+  overflow-y: auto;
+}
