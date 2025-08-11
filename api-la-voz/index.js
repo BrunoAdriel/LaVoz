@@ -1,22 +1,57 @@
 const express = require('express');
 const cors = require('cors');
+const mysql = require('mysql2/promise');
+
+
 const app = express();
-const port = process.env.PORT || 3000;
-
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 
-app.get('/packs', (req, res) => {
-    const data ={
-        pack : [
-            {ITEM : "50 Preguntas", ID_ITEM : 1, DESCRIPCION :"50", ITEM_PRICE : 50, ITEM_CANT : 50},
-            {ITEM : "100 Preguntas", ID_ITEM : 2, DESCRIPCION :"100", ITEM_PRICE : 100, ITEM_CANT : 100},
-            {ITEM : "150 Preguntas", ID_ITEM : 3, DESCRIPCION :"150", ITEM_PRICE : 150, ITEM_CANT : 150},
-            {ITEM : "200 Preguntas", ID_ITEM : 4, DESCRIPCION :"200", ITEM_PRICE : 200, ITEM_CANT : 200},
-        ]
-    };
-    res.json(data);
+// Coneccion a la SQL
+
+const pool = mysql.createPool({
+    host: 'localhost',
+    user:'root',
+    password:'RocioBel43093',
+    database:  'laVoz',
+    waitForConnections: true,
+});
+
+
+// Data de Packs
+
+app.get('/packs', async ( req, res )=>{
+    try{
+        const connection = await pool.getConnection();
+        
+        // Obtengo toda la informacion que necesito para packs
+        const [pack] = await connection.query('SELECT * FROM pack');
+        const [carrier] = await connection.query('SELECT * FROM carrier');
+        const [plataforma] = await connection.query('SELECT * FROM plataforma');
+        const [id_producto] = await connection.query('SELECT id_producto FROM id_producto');
+        const [id_trivia] = await connection.query('SELECT id_trivia FROM id_trivia');
+        connection.release(); 
+
+        res.json({
+            status: true,
+            result:{
+                pack: pack,
+                carrier: carrier,
+                plataforma: plataforma,
+                id_producto: id_producto[0].id_producto,
+                id_trivia: id_trivia[0].id_trivia
+            }
+        });
+
+    }catch(error){
+        console.error(error);
+        res.status(500).json({ Status: false, error: 'Error al obtener la coneccion de Packs' })
+    }
+
 })
+
+
+
 
 app.post('/packs', (req, res) => {
     const { id_plataforma, id_trivia, id_item, item_cant, item_price, ani, email, id_carrier, id_producto } = req.body;
@@ -67,6 +102,24 @@ const dataRecived = {
     res.json(dataRecived);
 })
 
-app.listen(port, () => {
-    console.log(`API corriendo http://localhost:${port}`);
+
+app.get/('/preguntas', (req, res) => {
+    const result = {
+        PREGUNTA: [
+            { ID_PREGUNTA: 1, PREGUNTA: "¿Cuál es la capital de Francia?"},
+            RESPUESTAS = [
+                { A: 1, RESPUESTA: "París" },
+                { B: 2, RESPUESTA: "Londres" }
+            ]
+        ],
+        PUNTOS :"498",
+        RESTANTES : 10,
+        TOTAL: 101
+    }
+        res.json(result);
+    })
+
+
+app.listen(3000, () => {
+    console.log("Servidor backend corriendo en http://localhost:3000");
 });

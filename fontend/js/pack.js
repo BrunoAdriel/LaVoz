@@ -1,5 +1,6 @@
+//Objeto 
 const dataRecived = {
-  pack : [],
+/*   pack : [],
     carrier : [
       {name : "MOVISTAR", id : 1},
       {name : "PERSONAL", id : 2},
@@ -11,7 +12,7 @@ const dataRecived = {
       {name : "Mensaje de Texto", id : 3, url: "/packs" } 
     ],
       id_producto: 501,
-      id_trivia: 501
+      id_trivia: 501 */
 }
 
 
@@ -30,21 +31,28 @@ let plataformaSeleccionada = null;
 let idMedioPago = null;
 let opcionElegida = "";
 
+//Conexiones al backend
+const url = "http://localhost:3000";
+
 async function ObtenerPacks(){
   try{
     // Realizar la solicitud al backend
-    const res = await  fetch("http://localhost:3000/packs",)
+    const res = await  fetch(`${url}/packs`,)
     const data = await res.json();
-    const packs = data.pack || [];
-    dataRecived.pack = packs;
-    return packs; 
+    if (!data.status) throw new Error('Error en la API');
+    
+    // Asigno al objeto global
+    Object.assign(dataRecived, data.result)
+    cargarOperadoras(dataRecived.carrier);
+    return data.result.pack;
+
   }catch(error){
     console.error("Error al obtener los packs de pregunta", error);
-    return;
+    return [] ;
   }
 }
 
-
+// Logica del servidor
 async function CrearCards(){
     try {
     const packs = await ObtenerPacks(); 
@@ -60,7 +68,7 @@ async function CrearCards(){
           <h5 class="card-title">${p.ITEM}</h5>
         </section>
         <section class="card-body d-none">
-          <p class="card-text">${p.DESCRIPCION}</p>
+          <p class="card-text">${p.DESCRIPTION}</p>
           <p class="card-text"><small>Valor: $${p.ITEM_PRICE}</small></p>
           <p hidden>${p.ITEM_CANT}</p>
             <section class="card-footer d-flex justify-content-center">
@@ -112,8 +120,9 @@ CrearCards();
 //inyecto los btn de pago
 function crearBtn(plataforma) {
   medioPago.innerHTML = plataforma.map(plat => `
-    <button class="btn btn-outline-primary option-btn btn-principal m-2" data-option="${plat.name}" data-id="${plat.id}">${plat.name}</button>
+    <button class="btn btn-outline-primary option-btn btn-principal m-2" data-option="${plat.name}" data-id="${plat.id_plataforma}">${plat.name}</button>
   `).join('');
+  console.log("Plataformas cargadas:", plataforma);
 
     document.querySelectorAll('.option-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -145,18 +154,17 @@ function crearBtn(plataforma) {
 
 //Inyecto las operadoras
 
-function cargarOperadoras(carriers) {
+function cargarOperadoras(carrier) {
   const selectOperadora = document.getElementById('operadora');
 
-  carriers.forEach(carrier => {
+  carrier.forEach(carrier => {
     const option = document.createElement('option');
-    option.value = carrier.id;
+    option.value = carrier.id_carrier;
+
     option.textContent = carrier.name.charAt(0).toUpperCase() + carrier.name.slice(1); 
     selectOperadora.appendChild(option);
   });
 };
-
-cargarOperadoras(dataRecived.carrier);
 
 
 //funcion cerrar modal
@@ -267,19 +275,22 @@ if (flag === 'success') {
 function plataformaData(nombre){
   return dataRecived.plataforma.find(p => p.name === nombre)
 };
+/* // Captura el evento de click en los botones de pago
+window.idMedioPago = plataformaData(opcion).id_plataforma; */
+
 
 // Función para enviar los datos al backend
 async function enviarPago(datos, metodoPago) {  
-    const plataformaSeleccionada = plataformaData(metodoPago); 
+/*     const plataformaSeleccionada = plataformaData(metodoPago); 
 
     //Si el metodoPago elegido tiene distinta URL al seleccionado
     if(!plataformaSeleccionada || !plataformaSeleccionada.url){
     document.getElementById("formErrors").innerText = "Método de pago no válido.";
     return;
   }
-
+ */
   try {
-    const response = await fetch('http://localhost:3000/packs', {
+    const response = await fetch(`${url}/packs`, {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(datos)
@@ -298,13 +309,14 @@ async function enviarPago(datos, metodoPago) {
     if (contentType.includes("application/json")) {
       const data = await response.json(); 
       console.log("Respuesta JSON:", data);
+      console.log("datos enviados:", datos);
 
       if (data.status && data.result) {
-        const redireccion = data.result.init_point || data.result.checkout_url; 
+        /* const redireccion = data.result.init_point || data.result.checkout_url;  */
         console.log("Redireccion",redireccion)
 
         mostrarToast("Formulario enviado correctamente", "success");
-
+        console.log("Datos enviados:", data);
         //window.location.href = redireccion; 
 
       }
