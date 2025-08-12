@@ -68,6 +68,7 @@ app.post('/packs', (req, res) => {
 
 // Data de Landing
 
+
 app.get('/landing', async (req, res) => {
     try{
         const connection = await pool.getConnection();
@@ -114,21 +115,18 @@ app.post('/landing', (req, res) => {
 });
 
 
-app.get/('/preguntas', (req, res) => {
-    const result = {
-        PREGUNTA: [
-            { ID_PREGUNTA: 1, PREGUNTA: "¿Cuál es la capital de Francia?"},
-            RESPUESTAS = [
-                { A: 1, RESPUESTA: "París" },
-                { B: 2, RESPUESTA: "Londres" }
-            ]
-        ],
-        PUNTOS :"498",
-        RESTANTES : 10,
-        TOTAL: 101
+// Data de Preguntas
+
+
+app.get/('/preguntas/:ani', async (req, res) => {
+    const { ani } = req.params; 
+    try{
+
+    }catch(error) {
+        console.error(error);
+        res.status(500).json({ status: false, error: 'Error al obtener la coneccion con Preguntas' });
     }
-        res.json(result);
-    })
+})
 
 
 app.listen(3000, () => {

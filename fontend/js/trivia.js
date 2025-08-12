@@ -19,6 +19,9 @@ const dataParticipante = document.getElementById('dataParticipante');
 const spinnerSubmit =  document.querySelector('#spinnerSubmit');
 const tituloTrivia = document.getElementById('tituloTrivia');
 
+//Conexiones al backend
+const url = "http://localhost:3000";
+
 //Logica para inyectar el estilo en la clase segun el resultado
 function mostrarToast(mensaje, tipo) {
 let color = {
@@ -156,7 +159,7 @@ btnIniciarTrivia.addEventListener('click', async () => {
 async function cargarPregunta(){
   try{
     //Consumo de la API 
-/*     let url = `${API_URL_TRIVIA}/pregunta/${numeroIngresado}`;
+/*     let url = `${API_URL_TRIVIA}/preguntas/${numeroIngresado}`;
     const res = await fetch(url, {
       method : "POST",
       headers : {'Content-Type' : 'application/json',
