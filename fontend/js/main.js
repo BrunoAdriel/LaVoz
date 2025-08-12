@@ -24,12 +24,12 @@ async function fetchData() {
       throw new Error('Error al obtener los datos de Packs');
     }
 
-    console.log("Datos obtenidos:", data.result);
     Object.assign(dataRecived, data.result);
     crearCard(dataRecived.participantes);
-/*     // Asigno al objeto global
-    return data.result;
- */
+    crearBtn(dataRecived.plataforma);
+    crearOpcionVotos(dataRecived.items);
+    cargarOperadoras(dataRecived.carrier);
+
   } catch (error) {
     console.error(error);
     return null;
@@ -44,31 +44,6 @@ const dataRecived = {
   carrier: [],
   plataforma: [],
   idproducto: null
-/*     participantes : [
-      {name : "Agustina", team : "Lali", idParticipante : 1, img : "img/agustina.jpg", teamImg : "img/logovozarg.png"},
-      {name : "Florencio", team : "Luck Ra", idParticipante : 2, img : "img/florencio.jpg", teamImg : "img/logovozarg.png"},
-      {name : "Laura", team : "Miranda", idParticipante : 3, img : "img/laura.jpg", teamImg : "img/logovozarg.png"},
-      {name : "Santi", team : "Soledad", idParticipante : 4, img : "img/santi.jpg", teamImg : "img/logovozarg.png"},
-      {name : "Benja", team : "Lali", idParticipante : 5, img : "img/benja.jpg", teamImg : "img/logovozarg.png"},
-      {name : "Valen", team : "Luck Ra", idParticipante : 6, img : "img/valen.jpg", teamImg : "img/logovozarg.png"},
-      {name : "Mariale", team : "Miranda", idParticipante : 7, img : "img/mariale.jpg", teamImg : "img/logovozarg.png"},
-    ],
-    items : [
-      { item_cant : 50, item_price : "10.00"},
-      { item_cant : 100, item_price : "20.00"}
-    ],
-    carrier : [
-      {name : "claro", id : 1},
-      {name : "personal", id : 2},
-      {name : "movistar", id : 3},
-    ],
-    plataforma : [
-      {name : "Mercado Pago", id : 1},
-      {name : "Pago360", id : 2},
-
-      {name : "Mensaje de Texto", id : 3}
-],
-    idproducto: 355 */
 };
 
 //Inyeccion de las cards con los participantes
@@ -93,20 +68,15 @@ function crearCard(participantes){
   `).join('');
 };
 
-/* // Ejecutar al cargar la página
-crearCard(dataRecived.participantes); */
-
 //inyecto los btn de pago
 
 const medioPago = document.getElementById("medioPago");
 
 function crearBtn(plataforma){
   medioPago.innerHTML = plataforma.map(plat => `
-    <button class="btn btn-outline-primary option-btn btn-principal" data-option="${plat.name}" data-id="${plat.id}">${plat.name}</button>
+    <button class="btn btn-outline-primary option-btn btn-principal" data-option="${plat.name}" data-id="${plat.id_plataforma}">${plat.name}</button>
     `).join('');
   };
-
-crearBtn(dataRecived.plataforma);
 
 //Inyectar los btn de los votos ${}
 
@@ -118,7 +88,7 @@ function crearOpcionVotos(items){
     `).join('');
 };
 
-crearOpcionVotos(dataRecived.items);
+
 
 //Inyecto las operadoras
 
@@ -127,13 +97,11 @@ function cargarOperadoras(carriers) {
 
   carriers.forEach(carrier => {
     const option = document.createElement('option');
-    option.value = carrier.id;
+    option.value = carrier.id_carrier;
     option.textContent = carrier.name.charAt(0).toUpperCase() + carrier.name.slice(1); 
     selectOperadora.appendChild(option);
   });
 };
-
-cargarOperadoras(dataRecived.carrier);
 
 // Escucha la accion del btn, abre la primera seccion del modal y captura el nombre del participante con su id
 cardPart.addEventListener('click', (e) => {
@@ -176,7 +144,7 @@ medioPago.addEventListener('click', (e) => {
     document.querySelector('.after-submit').classList.add('hidden');
     document.getElementById('formErrors').innerText = "";
 
-    // Scroll suave hacia el botón de pago
+    // Scroll hacia el botón de pago
       setTimeout(() => {
         document.getElementById("voteForm").scrollIntoView({ behavior: "smooth", block: "center" });
       },0);
@@ -266,7 +234,7 @@ telefonoInput.addEventListener('input', (e) => {
     postSubmit.classList.remove("hidden");
     document.getElementById("loadingSpinner").classList.remove("hidden");
 
-/*     //Datos del cliente que se envian a la BD
+    //Datos del cliente que se envian a la BD
     const datos = { 
       id_candidato: participante, 
       id_plataforma: idMedioPago, 
@@ -278,7 +246,7 @@ telefonoInput.addEventListener('input', (e) => {
       id_producto: Number(dataRecived.idproducto)
     };
 
-    await enviarPago(datos, opcionElegida); */
+    await enviarPago(datos, opcionElegida);
 });
   
 //Funcion para agregarle precio dependiendo al opcion elegida
@@ -323,31 +291,28 @@ const flag = urlParams.get('flag');
   }
 
 //Funcion para capturar la informacion de la plataforma
-/* function plataformaData(nombre){
+function plataformaData(nombre){
   return dataRecived.plataforma.find(p => p.name === nombre)
 };
- */
+
 // Función para enviar los datos al backend
 async function enviarPago(datos, metodoPago) {
-    /* const plataformaSeleccionada = plataformaData(metodoPago); */
+    const plataformaSeleccionada = plataformaData(metodoPago); 
 
     //Si el metodoPago elegido tiene distinta URL al seleccionado
-    if(!plataformaSeleccionada || !plataformaSeleccionada.url){
+    if(!plataformaSeleccionada){
     document.getElementById("formErrors").innerText = "Método de pago no válido.";
     document.getElementById("loadingSpinner").classList.add("hidden");
     return;
   }
-  const url = plataformaSeleccionada.url;
 
   try {
-/*     const response = await fetch(url, {
+    const response = await fetch(`${url}/landing`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${tokenLand}`
-      },
+      headers: {"Content-Type": "application/json"},
       body: JSON.stringify(datos)
     });
+      console.log("Datos enviados:", datos);
     
       //Mostrar el Toast segun el estado
       function mostrarToast(mensaje, color) {
@@ -360,7 +325,7 @@ async function enviarPago(datos, metodoPago) {
           close: true
         }).showToast();
       };
- */
+
     const contentType = response.headers.get("Content-Type") || "";
 
     if (!response.ok) {
@@ -382,17 +347,17 @@ async function enviarPago(datos, metodoPago) {
 
         mostrarToast("Formulario enviado correctamente", "green");
 
-          if (metodoPago === "Mercado Pago") {
+/*           if (metodoPago === "Mercado Pago") {
             document.getElementById("pagoFinal").classList.remove("hidden");
             document.getElementById("botonPagar").classList.remove("d-none");
 
-            // document.getElementById("botonPagar").onclick = () => {
-            //   window.location.href = redireccion;
-            // };
-            //window.location.href = redireccion;
+            document.getElementById("botonPagar").onclick = () => {
+              window.location.href = redireccion;
+            };
+            window.location.href = redireccion;
           } else {
-            //window.location.href = redireccion;
-          }
+            window.location.href = redireccion;
+          } */
       }
     } else {
       const errorText = await response.text();

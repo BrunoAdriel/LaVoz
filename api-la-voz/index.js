@@ -94,35 +94,24 @@ app.get('/landing', async (req, res) => {
         console.error(error);
         res.status(500).json({ status: false, error: 'Error al obtener la coneccion con Landing'});
     }
-
-/*     const dataRecived = {
-    participantes : [
-        {name : "Agustina", team : "Lali", idParticipante : 1, img : "img/agustina.jpg", teamImg : "img/logovozarg.png"},
-        {name : "Florencio", team : "Luck Ra", idParticipante : 2, img : "img/florencio.jpg", teamImg : "img/logovozarg.png"},
-        {name : "Laura", team : "Miranda", idParticipante : 3, img : "img/laura.jpg", teamImg : "img/logovozarg.png"},
-        {name : "Santi", team : "Soledad", idParticipante : 4, img : "img/santi.jpg", teamImg : "img/logovozarg.png"},
-        {name : "Benja", team : "Lali", idParticipante : 5, img : "img/benja.jpg", teamImg : "img/logovozarg.png"},
-        {name : "Valen", team : "Luck Ra", idParticipante : 6, img : "img/valen.jpg", teamImg : "img/logovozarg.png"},
-        {name : "Mariale", team : "Miranda", idParticipante : 7, img : "img/mariale.jpg", teamImg : "img/logovozarg.png"},
-    ],
-    items : [
-        { item_cant : 50, item_price : "10.00"},
-        { item_cant : 100, item_price : "20.00"}
-    ],
-    carrier : [
-        {name : "claro", id : 1},
-        {name : "personal", id : 2},
-        {name : "movistar", id : 3},
-    ],
-    plataforma : [
-        {name : "Mercado Pago", id : 1},
-        {name : "Pago360", id : 2},
-        {name : "Mensaje de Texto", id : 3}
-    ],
-    idproducto: 355
-};
-    res.json(dataRecived); */
 })
+
+// Post de Landing
+app.post('/landing', (req, res) => {
+    const { id_candidato, id_plataforma, item_cant, item_price, ani, email, id_carrier, id_producto } = req.body;
+
+    if (!id_candidato || !id_plataforma || !item_cant || !item_price || !ani || !email || !id_carrier || !id_producto) {
+        return res.json({ status: false, error: "Faltan datos obligatorios" });
+    }
+
+    res.json({
+        status: true,
+        result: {
+            init_point: "",
+            checkout_url: ""
+        }
+    });
+});
 
 
 app.get/('/preguntas', (req, res) => {
