@@ -45,14 +45,10 @@ app.get('/packs', async ( req, res )=>{
 
     }catch(error){
         console.error(error);
-        res.status(500).json({ Status: false, error: 'Error al obtener la coneccion de Packs' })
+        res.status(500).json({ status: false, error: 'Error al obtener la coneccion de Packs' })
     }
-
 })
-
-
-
-
+// Post de Packs
 app.post('/packs', (req, res) => {
     const { id_plataforma, id_trivia, id_item, item_cant, item_price, ani, email, id_carrier, id_producto } = req.body;
 
@@ -63,17 +59,43 @@ app.post('/packs', (req, res) => {
     res.json({
         status: true,
         result: {
-            init_point: "/packs",
-            checkout_url: "/packs"
+            init_point: "",
+            checkout_url: ""
         }
     });
 });
 
 
+// Data de Landing
 
+app.get('/landing', async (req, res) => {
+    try{
+        const connection = await pool.getConnection();
 
-app.get('/landing', (req, res) => {
-const dataRecived = {
+        const [participantes] = await connection.query('SELECT * FROM participantes');
+        const [items] = await connection.query('SELECT * FROM items');
+        const [carrier] = await connection.query('SELECT * FROM carrier');
+        const [plataforma] = await connection.query('SELECT * FROM plataforma');
+        const [idproducto] = await connection.query('SELECT idProducto FROM idproducto');
+
+        connection.release();
+
+        res.json({
+            status: true,
+            result: {
+                participantes: participantes,
+                items: items,
+                carrier: carrier,
+                plataforma: plataforma,
+                idproducto: idproducto[0].idProducto
+            }
+        });
+    }catch(error){
+        console.error(error);
+        res.status(500).json({ status: false, error: 'Error al obtener la coneccion con Landing'});
+    }
+
+/*     const dataRecived = {
     participantes : [
         {name : "Agustina", team : "Lali", idParticipante : 1, img : "img/agustina.jpg", teamImg : "img/logovozarg.png"},
         {name : "Florencio", team : "Luck Ra", idParticipante : 2, img : "img/florencio.jpg", teamImg : "img/logovozarg.png"},
@@ -99,7 +121,7 @@ const dataRecived = {
     ],
     idproducto: 355
 };
-    res.json(dataRecived);
+    res.json(dataRecived); */
 })
 
 

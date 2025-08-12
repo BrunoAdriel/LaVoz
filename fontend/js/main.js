@@ -11,10 +11,40 @@ let nombreParticipante = "";
 let opcionElegida = "";
 let votosSeleccionados = null;
 let idMedioPago = null;
-  
+
+//Conexiones al backend
+const url = "http://localhost:3000";
+
+async function fetchData() {
+
+  try {
+    const response = await fetch(`${url}/landing`);
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error('Error al obtener los datos de Packs');
+    }
+
+    console.log("Datos obtenidos:", data.result);
+    Object.assign(dataRecived, data.result);
+    crearCard(dataRecived.participantes);
+/*     // Asigno al objeto global
+    return data.result;
+ */
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+fetchData();
+
 //Array de data que envio a la DB 
 const dataRecived = {
-    participantes : [
+  participantes: [],
+  items: [],
+  carrier: [],
+  plataforma: [],
+  idproducto: null
+/*     participantes : [
       {name : "Agustina", team : "Lali", idParticipante : 1, img : "img/agustina.jpg", teamImg : "img/logovozarg.png"},
       {name : "Florencio", team : "Luck Ra", idParticipante : 2, img : "img/florencio.jpg", teamImg : "img/logovozarg.png"},
       {name : "Laura", team : "Miranda", idParticipante : 3, img : "img/laura.jpg", teamImg : "img/logovozarg.png"},
@@ -35,9 +65,10 @@ const dataRecived = {
     plataforma : [
       {name : "Mercado Pago", id : 1},
       {name : "Pago360", id : 2},
+
       {name : "Mensaje de Texto", id : 3}
 ],
-    idproducto: 355
+    idproducto: 355 */
 };
 
 //Inyeccion de las cards con los participantes
@@ -62,8 +93,8 @@ function crearCard(participantes){
   `).join('');
 };
 
-// Ejecutar al cargar la página
-crearCard(dataRecived.participantes);
+/* // Ejecutar al cargar la página
+crearCard(dataRecived.participantes); */
 
 //inyecto los btn de pago
 

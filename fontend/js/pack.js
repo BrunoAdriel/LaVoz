@@ -1,18 +1,10 @@
 //Objeto 
 const dataRecived = {
-/*   pack : [],
-    carrier : [
-      {name : "MOVISTAR", id : 1},
-      {name : "PERSONAL", id : 2},
-      {name : "CLARO", id : 3},
-    ],
-    plataforma : [
-      {name : "Mercado Pago", id : 1, url: "/packs"},
-      {name : "Pago360", id : 2, url: "/packs"},
-      {name : "Mensaje de Texto", id : 3, url: "/packs" } 
-    ],
-      id_producto: 501,
-      id_trivia: 501 */
+    pack: [],
+    carrier: [],
+    plataforma: [],
+    id_producto: null,
+    id_trivia: null
 }
 
 
@@ -239,6 +231,7 @@ voteForm.addEventListener('submit', async function (e) {
   await enviarPago(datos, window.opcionElegida);
 });
 
+
 //Mostrar el Toast segun el estado
 function mostrarToast(mensaje, tipo) {
   let color = {
@@ -271,24 +264,22 @@ if (flag === 'success') {
   mostrarToast("Tu operación está pendiente", "warning");
 }
 
+
 //Funcion para capturar la informacion de la plataforma
 function plataformaData(nombre){
   return dataRecived.plataforma.find(p => p.name === nombre)
-};
-/* // Captura el evento de click en los botones de pago
-window.idMedioPago = plataformaData(opcion).id_plataforma; */
-
+}; 
 
 // Función para enviar los datos al backend
 async function enviarPago(datos, metodoPago) {  
-/*     const plataformaSeleccionada = plataformaData(metodoPago); 
+    const plataformaSeleccionada = plataformaData(metodoPago);  
 
     //Si el metodoPago elegido tiene distinta URL al seleccionado
-    if(!plataformaSeleccionada || !plataformaSeleccionada.url){
+    if(!plataformaSeleccionada){
     document.getElementById("formErrors").innerText = "Método de pago no válido.";
     return;
   }
- */
+
   try {
     const response = await fetch(`${url}/packs`, {
       method: 'POST',
@@ -312,7 +303,7 @@ async function enviarPago(datos, metodoPago) {
       console.log("datos enviados:", datos);
 
       if (data.status && data.result) {
-        /* const redireccion = data.result.init_point || data.result.checkout_url;  */
+        const redireccion = data.result.init_point || data.result.checkout_url;
         console.log("Redireccion",redireccion)
 
         mostrarToast("Formulario enviado correctamente", "success");
