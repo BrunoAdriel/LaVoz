@@ -116,15 +116,95 @@ app.post('/landing', (req, res) => {
 
 
 // Data de Preguntas
+// Validar ANI
 
-
-app.get/('/preguntas/:ani', async (req, res) => {
+app.get/('/preguntas/validar/:ani', async (req, res) => {
     const { ani } = req.params; 
     try{
+        const connection =await pool.getConnection();
+        const [rows] = await connection.query('SELECT ani, puntos, total, restantes FROM usuarios WHERE ani = ?', [ani]);
+        connection.release();
 
+        if(!rows.length){
+            return res.json({ status: false, error: 'Usuario no registrado' });
+        }
+
+        const usuario = rows[0];
+        res.json({
+            status: true,
+            ani: usuario.ani,
+            puntos: usuario.puntos,
+            total: usuario.total,
+            restantes: usuario.restantes,
+            triviaActiva: usuario.restantes > 0
+        });
     }catch(error) {
         console.error(error);
         res.status(500).json({ status: false, error: 'Error al obtener la coneccion con Preguntas' });
+    }
+})
+
+//Obtener la siguiente pregunta
+app.post('/preguntas/siguiente', async (req, res) => {
+    const { ani, id_trivia } = req.body;
+
+    try{
+        const connection = await pool.getConnection();
+        const [resultPreg] = await connection.query('CALL obtener_pregunta(?, ?)', [ani,id_trivia]);
+        connection.release();
+
+        // Si no hay mas preguntas disponibles
+        const preguntaData = resultPreg[0][0];
+        if(!preguntaData || !preguntaData.id_pregunta){
+            return res.json({
+                status: false,
+                mensaje: "Trivia Finalizada",
+                puntosFinales: preguntaData?.puntos || 0,
+                restantes: preguntaData?.restantes || 0 
+            });
+        }
+
+        res.json({
+            status: true,
+            result: {
+                PREGUNTA: {
+                    ID_TRIVIA: pregunta.id_trivia,
+                    ID_PREGUNTA: pregunta.id_pregunta,
+                    PREGUNTA: pregunta.pregunta,
+                    RESPUESTAS: rtaObjet
+                },
+                PUNTOS: usuario.puntos,
+                RESTANTES: usuario.restantes,
+                TOTAL: usuario.total,
+                CROSSELING:{
+                    mensaje: "❌ Te estás quedando sin preguntas!",
+                    link: "/packs"
+                }
+            }
+        });
+    }catch(error){
+        console.error(error);
+        res.status(500).json({ status: false, error: 'Error al obtener la pregunta disponible' });
+    }
+})
+
+//Enviar la respuesta
+app.post('/preguntas/responder', async (req, res) => {
+    const {ani, id_pregunta, clave} = req.body;
+
+    try{
+        const connection = await pool.getConnection();
+        const [rtaResult] = await connection.query('CALL responder_pregunta(?, ?, ?)', [ani, id_pregunta, clave]);
+        connection.release();
+
+        res.json({ status: true, mensaje: "Respuesta registrada"});
+        
+    }catch(error){
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.json({ status: false, error: "Pregunta ya respondida" });
+        }
+        console.error(error);
+        res.status(500).json({ status: false, error: 'Error al enviar respuesta al servidor'})
     }
 })
 
