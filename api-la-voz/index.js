@@ -118,7 +118,7 @@ app.post('/landing', (req, res) => {
 // Data de Preguntas
 // Validar ANI
 
-app.get/('/preguntas/validar/:ani', async (req, res) => {
+app.get('/preguntas/validar/:ani', async (req, res) => {
     const { ani } = req.params; 
     try{
         const connection =await pool.getConnection();
@@ -136,7 +136,7 @@ app.get/('/preguntas/validar/:ani', async (req, res) => {
             puntos: usuario.puntos,
             total: usuario.total,
             restantes: usuario.restantes,
-            triviaActiva: usuario.restantes > 0
+            triviaActiva: usuario.restantes > 0 
         });
     }catch(error) {
         console.error(error);
@@ -168,14 +168,14 @@ app.post('/preguntas/siguiente', async (req, res) => {
             status: true,
             result: {
                 PREGUNTA: {
-                    ID_TRIVIA: pregunta.id_trivia,
-                    ID_PREGUNTA: pregunta.id_pregunta,
-                    PREGUNTA: pregunta.pregunta,
-                    RESPUESTAS: rtaObjet
+                    ID_TRIVIA: preguntaData.id_trivia,
+                    ID_PREGUNTA: preguntaData.id_pregunta,
+                    PREGUNTA: preguntaData.pregunta,
+                    RESPUESTAS: preguntaData.respuestas
                 },
-                PUNTOS: usuario.puntos,
-                RESTANTES: usuario.restantes,
-                TOTAL: usuario.total,
+                PUNTOS: preguntaData.puntos,
+                RESTANTES: preguntaData.restantes,
+                TOTAL: preguntaData.total,
                 CROSSELING:{
                     mensaje: "❌ Te estás quedando sin preguntas!",
                     link: "/packs"
@@ -198,7 +198,7 @@ app.post('/preguntas/responder', async (req, res) => {
         connection.release();
 
         res.json({ status: true, mensaje: "Respuesta registrada"});
-        
+
     }catch(error){
         if (error.code === 'ER_DUP_ENTRY') {
             return res.json({ status: false, error: "Pregunta ya respondida" });

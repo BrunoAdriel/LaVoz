@@ -43,26 +43,27 @@ let color = {
 }
 
 //Funcion para capturar el usuario 
-/* async function validarUsuario(ani) {
+async function validarUsuario(ani) {
   try{
-    const res = await fetch(`${API_ANI}/501/active/${ani}`, {
-      method : "POST",
-      headers : {'Content-Type' : 'application/json',
-                  'Authorization' : `Bearer ${tokenTrivia}`
-      },
+    const res = await fetch(`${url}/preguntas/validar/${ani}`, {
+      method : "GET",
+      headers : {'Content-Type' : 'application/json'},
     })
     const data = await res.json();
     console.log("informacion de api:", data);
 
     //Si no me llegan 3 parametros principales
-    if (!data.status || !data.result || data.statusCode !== 201) {
+    if (!data.status) {
       return null;
     } else {
     // Devuelvo del objeto los elementos que necesito
     return {
-      ani: data.result.ANI_CLIENTE,
-      triviaActiva: data.active,
-      name: `${data.result.ANI_CLIENTE}` 
+      ani: data.ani,
+      triviaActiva: data.triviaActiva,
+      name: data.ani,
+      puntos: data.puntos,
+      total: data.total,
+      restantes: data.restantes
     };
     }
 
@@ -70,7 +71,7 @@ let color = {
     console.error("Error interno en el servidor.", error);
     throw new Error('Fallo interno en el servidor');
   }
-}  */
+} 
 
 // Funcion para mostrar mensajes
 function mensajeUsuario(usuario, numeroIngresado){
@@ -159,34 +160,29 @@ btnIniciarTrivia.addEventListener('click', async () => {
 async function cargarPregunta(){
   try{
     //Consumo de la API 
-/*     let url = `${API_URL_TRIVIA}/preguntas/${numeroIngresado}`;
-    const res = await fetch(url, {
+    const res = await fetch(`${url}/preguntas/siguiente`, {
       method : "POST",
-      headers : {'Content-Type' : 'application/json',
-                  'Authorization' : `Bearer ${tokenTrivia}`
-      },
+      headers : {'Content-Type' : 'application/json'},
       body: JSON.stringify({
             id_trivia: 501,
             ani: numeroIngresado
       })
     });
     pregunta = await res.json();
-    console.log("Contenido preg:",pregunta); */
+    console.log("Contenido preg:",pregunta); 
 
     //Guardo el contenido de pregunta, si este viene vacio o sin ID finaliza
-    const preguntaData = pregunta.result.PREGUNTA;
-    if (!preguntaData || !preguntaData.ID_PREGUNTA) {
+    if(!pregunta.status || !pregunta.result?.PREGUNTA?.ID_PREGUNTA){
       return finalizarTrivia({
-        puntosFinales: pregunta.result.PUNTOS || 0,
-        totalRespondido: pregunta.result.TOTAL || 0,
-      });
+        puntosFnailes: pregunta.puntosFinales || 0,
+        totalRespondido: pregunta.restates || 0
+    });
     }
-
-    //Objeto fictisio crossling
+/*     //Objeto fictisio crossling
     pregunta.result.CROSSELING={
       mensaje:"❌Te estas quedando sin preguntas!",
       link:"/packs"
-    }  
+    }   */
 
     triviaContainer.classList.remove('d-none');
 
