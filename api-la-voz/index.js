@@ -1,19 +1,19 @@
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2/promise');
-
+const dotenv = require('dotenv');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-
+dotenv.config();
 // Coneccion a la SQL
 
 const pool = mysql.createPool({
-    host: 'localhost',
-    user:'root',
-    password:'RocioBel43093',
-    database:  'laVoz',
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     waitForConnections: true,
 });
 
