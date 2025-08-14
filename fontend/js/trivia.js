@@ -196,8 +196,8 @@ async function cargarPregunta(){
 // Mostrar pregunta
 function mostrarPregunta(pregunta) {
   preguntaActual.textContent = pregunta.result.PREGUNTA.PREGUNTA;
-  puntosObtenidos.textContent = `Puntos: ${pregunta.result.PUNTOS}`;
-  contadorPreguntas.textContent = `Pregunta: ${pregunta.result.RESTANTE}/${pregunta.result.TOTAL}`;
+  puntosObtenidos.textContent = `Puntos: ${parseInt(pregunta.result.PUNTOS)}`;
+  contadorPreguntas.textContent = `Pregunta: ${pregunta.result.RESTANTES}/${pregunta.result.TOTAL}`;
   crosselingPacks(pregunta.result.RESTANTE, pregunta.result.TOTAL, pregunta.result.CROSSELING)
   respuestaSeleccionada = null;
   btnEnviar.classList.add('d-none');
@@ -228,19 +228,16 @@ btnEnviar.addEventListener('click', async () => {
     spinnerSubmit.classList.remove('d-none');
 
     //Envia respuesta a la API
-/*     const url = `${API_URL_TRIVIA}/respuesta/${numeroIngresado}`;
-    const res = await fetch(url, {
+    const res = await fetch(`${url}/preguntas/responder`, {
     method : 'POST',
-    headers: {  'Content-Type': 'application/json',
-                'Authorization': `Bearer ${tokenTrivia}`
-     },
+    headers: {  'Content-Type': 'application/json'},
     body: JSON.stringify({
       id_trivia: pregunta.result.PREGUNTA.ID_TRIVIA,
       id_pregunta: pregunta.result.PREGUNTA.ID_PREGUNTA,
-      respuesta: respuestaSeleccionada,
+      clave: respuestaSeleccionada,
       ani: numeroIngresado
     })
-  });   */
+  });   
   
   const data = await res.json();
   console.log('data traida:',data)

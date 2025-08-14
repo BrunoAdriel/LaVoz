@@ -190,14 +190,16 @@ app.post('/preguntas/siguiente', async (req, res) => {
 
 //Enviar la respuesta
 app.post('/preguntas/responder', async (req, res) => {
-    const {ani, id_pregunta, clave} = req.body;
+    const {ani, id_pregunta, clave, id_trivia} = req.body;
 
     try{
         const connection = await pool.getConnection();
-        const [rtaResult] = await connection.query('CALL responder_pregunta(?, ?, ?)', [ani, id_pregunta, clave]);
+        await connection.query('CALL responder_pregunta(?, ?, ?)', [ani, id_pregunta, clave]);
+
+        const [proximaPregunta] = await connection.query('CALL obtener_pregunta(?,?)', [ani, id_trivia]);
         connection.release();
 
-        res.json({ status: true, mensaje: "Respuesta registrada"});
+        res.json({ status: true, mensaje: "Respuesta registrada", result: proximaPregunta[0][0] || null });
 
     }catch(error){
         if (error.code === 'ER_DUP_ENTRY') {
