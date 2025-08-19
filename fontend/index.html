@@ -10,11 +10,16 @@
   <link href="css/index.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Logo de La Voz -->
-  <div class="logo-container">
-    <img src="img/voz_argentina_transparente.png" class="img-logo" alt="Imagen logo la Voz Argentina" />
-  </div>
-    <!-- inicio de las Cards -->
+
+  <!-- Logo de La Voz -->
+<div class="logo-container">
+  <img src="img/voz_argentina_transparente.png" class="img-logo" alt="Imagen logo la Voz Argentina" />
+</div>
+
+<!-- Nav -->
+<nav-component></nav-component>
+
+<!-- inicio de las Cards -->
   <div class="container mt-5 px-4 px-sm-0" id="cardsContainer">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 d-flex justify-content-center" id="cardPart">
       <!-- Importo los participantes desde el array mediane el main.js -->
@@ -27,7 +32,7 @@
         <span class="close-btn" id="cerrarModal">&times;</span>
     <!-- SECCIÓN 1: Opciones de pago -->
     <div id="seccionOpciones">
-      <h2 id="votarPart">Votá por [nombreParticipante]</h2>
+      <h2 id="votarPart" class="text-center">Votá por [nombreParticipante]</h2>
       <div class="d-flex flex-column" id="medioPago">
         <!-- Importo los btn de pago desde main.js -->
 
@@ -86,16 +91,16 @@
 </div>
 
 <!-- Footer -->
-</body>
-  <footer>
-    <div class="d-flex justify-content-center">
-      <img src="img/logo_playtown.png" alt="Imagen logo playtown" class="imgFooter">
-    </div>
-  </footer>
+<footer class="mt-5 mb-5">
+  <div class="d-flex justify-content-center">
+    <img src="img/logo_playtown.png" alt="Imagen logo playtown" class="imgFooter">
+  </div>
+</footer>
 
-<!-- Funcionalidad de la pagina -->
+</body>
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="js/main.js"></script>
-
+<script src="js/navComponent.js"></script>
 
 </html>

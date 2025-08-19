@@ -12,6 +12,14 @@
   justify-content: center;
 }
 
+
+/*****/
+body{  
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .overlay-modal {
   position: relative;
   z-index: 2;
@@ -132,6 +140,7 @@
 .imgFooter{
   padding: 5%;
   width: 20%;
+  max-height: 400px;
   /* height: 50%; */
 }
 .card-title {
@@ -139,4 +148,16 @@
 }
 #votarPart, .btn-principal{
   text-transform: uppercase;
+}
+footer {
+  margin-top: auto; 
+  padding: 20px 0;
+}
+
+/* Ajuste del logo del footer */
+.imgFooter {
+  max-width: 160px; 
+  width: 100%;       
+  height: auto;
+  padding: 0;       
 }
