@@ -13,7 +13,7 @@ let votosSeleccionados = null;
 let idMedioPago = null;
 
 //Conexiones al backend
-const url = "http://localhost:3000";
+const url = "https://lavoz-xvdb.onrender.com/";
 
 async function fetchData() {
 
