@@ -164,6 +164,7 @@ app.post('/preguntas/siguiente', async (req, res) => {
                 mensaje: "Trivia Finalizada",
                 puntosFinales: preguntaData?.puntos || 0,
                 restantes: preguntaData?.restantes || 0 
+                
             });
         }
 
