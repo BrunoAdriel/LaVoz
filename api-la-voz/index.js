@@ -19,7 +19,7 @@ const pool = mysql.createPool({
 });
 
 // Servir el frontend estático
-app.use(express.static(path.join(__dirname, 'fontend')));
+app.use(express.static(path.join(__dirname, '../fontend')));
 
 // Data de Packs
 
@@ -214,7 +214,7 @@ app.post('/preguntas/responder', async (req, res) => {
 })
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'fontend', 'index.html'));
+    res.sendFile(path.join(__dirname, '../fontend', 'index.html'));
 });
 
 const PORT = process.env.PORT || 3000;
