@@ -13,12 +13,13 @@ let votosSeleccionados = null;
 let idMedioPago = null;
 
 //Conexiones al backend
-const url = "https://la-voz.vercel.app";
+const url = "ttps://la-voz.vercel.app/api/landing";
 
 async function fetchData() {
 
   try {
-    const response = await fetch(`${url}/api/landing`);
+/*     const response = await fetch(`${url}/api/landing`); */
+const response = await fetch(`${url}`);
     const data = await response.json();
     if (!response.ok) {
       throw new Error('Error al obtener los datos de Packs');
