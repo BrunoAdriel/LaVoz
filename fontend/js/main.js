@@ -22,7 +22,7 @@ async function fetchData() {
 const response = await fetch(`${url}`);
     const data = await response.json();
     if (!response.ok) {
-      throw new Error('Error al obtener los datos de Packs');
+      throw new Error('Error al obtener los datos de landing');
     }
 
     Object.assign(dataRecived, data.result);
