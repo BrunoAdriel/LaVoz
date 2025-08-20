@@ -1,21 +1,29 @@
-import mysql from 'mysql2/promise';
+import { getConnection } from "./bd";
 
 export default async function getLanding(req, res) {
     try {
-    const connection = await mysql.createConnection({
-        uri: process.env.DATABASE_URL,
-        ssl: {
-        rejectUnauthorized: true
-        }
-    });
-        const [participantes] = await connection.execute('SELECT * FROM participantes');
-        
-        await connection.end();
+        const connection = await getConnection();
 
-        res.status(200).json({participantes});
+        const [participantes] = await connection.query('SELECT * FROM participantes');
+        const [items] = await connection.query('SELECT * FROM items');
+        const [carrier] = await connection.query('SELECT * FROM carrier');
+        const [plataforma] = await connection.query('SELECT * FROM plataforma');
+        const [idproducto] = await connection.query('SELECT idProducto FROM idproducto');
 
+        connection.release();
+
+        res.json({
+            status: true,
+            result: {
+                participantes: participantes,
+                items: items,
+                carrier: carrier,
+                plataforma: plataforma,
+                idproducto: idproducto[0].idProducto
+            }
+        });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ status: false, error: 'Error al obtener la coneccion de Packs' });
+        res.status(500).json({ status: false, error: 'Error al obtener la coneccion con Landing' });
     }
 }
