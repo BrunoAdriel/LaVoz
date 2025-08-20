@@ -18,8 +18,6 @@ const pool = mysql.createPool({
     waitForConnections: true,
 });
 
-/* // Servir el frontend estático
-app.use(express.static(path.join(__dirname, '../fontend'))); */
 
 // Data de Packs
 
@@ -214,9 +212,6 @@ app.post('/preguntas/responder', async (req, res) => {
     }
 })
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../fontend', 'index.html'));
-});
-
+// Servir el frontend estático
 const PORT = process.env.PORT || 3000; 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
