@@ -1,4 +1,4 @@
-import { getConnection } from "./bd";
+import { getConnection } from "./bd.js";
 
 export default async function handler(req, res) {
     try {
