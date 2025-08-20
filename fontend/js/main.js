@@ -13,7 +13,7 @@ let votosSeleccionados = null;
 let idMedioPago = null;
 
 //Conexiones al backend
-const url = "la-voz.vercel.app";
+const url = "https://la-voz.vercel.app";
 
 async function fetchData() {
 
