@@ -1,6 +1,6 @@
 import { getConnection } from "./bd";
 
-export default async function getLanding(req, res) {
+export default async function handler(req, res) {
     try {
         const connection = await getConnection();
 
