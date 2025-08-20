@@ -18,7 +18,7 @@ const url = "la-voz.vercel.app";
 async function fetchData() {
 
   try {
-    const response = await fetch(`${url}/api/landing`);
+    const response = await fetch(`${url}/apis/landing`);
     const data = await response.json();
     if (!response.ok) {
       throw new Error('Error al obtener los datos de Packs');
