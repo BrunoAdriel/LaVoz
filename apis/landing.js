@@ -10,15 +10,15 @@ export default async function handler(req, res) {
         const [plataforma] = await connection.query('SELECT * FROM plataforma');
         const [idproducto] = await connection.query('SELECT idProducto FROM idproducto');
 
-        connection.release();
+        await connection.end();
 
-        res.json({
+        res.status(200).json({
             status: true,
             result: {
-                participantes: participantes,
-                items: items,
-                carrier: carrier,
-                plataforma: plataforma,
+                participantes,
+                items,
+                carrier,
+                plataforma,
                 idproducto: idproducto[0].idProducto
             }
         });
